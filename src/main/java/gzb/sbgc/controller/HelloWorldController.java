@@ -15,6 +15,6 @@ public class HelloWorldController {
 @RequestMapping("/hello")
 @ResponseBody
   public String sayHello() {
-    return "Hello World Developer!!!";
+    return "Hello GZB Developer!!!";
 }
 }
