@@ -1,6 +1,8 @@
 package gzb.sbgc.pojo;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -8,26 +10,82 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Dumby {
 	
 	private int count;
+	private double duration;
 	private int size;
+	private String dumbyId;
+	private String startDate;
     private static AtomicInteger dumbyCount = new AtomicInteger();
+    private static ArrayList<byte[]> remember = new ArrayList<>();
 	
 	public Dumby(int count,int size) {
 		System.out.println("Dumby");
 		this.count=count;
 		this.size=size;
 		dumbyCount.getAndIncrement();
-		System.out.println("Dumby " + dumbyCount + " created");
+		dumbyId="Dumby-" + dumbyCount;
+		System.out.println(dumbyId + " created");
+		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+		Date date = new Date(System.currentTimeMillis());
+		startDate=formatter.format(date);
+		fillUp();
+	}
+	
+	public String getId() {
+		return(dumbyId);
+	}
+	
+	public int getSize() {
+		return(size);
+	}
+	
+	public int getCount() {
+		return(count);
+	}
+	
+	public double getDuration() {
+		return(duration);
+	}
+	
+	public String getStartDate() {
+		return(startDate);
 	}
 	
 	public void fillUp() {
-		long d1=System.currentTimeMillis();
+		//long d1=System.currentTimeMillis();
+		long d1=System.nanoTime();
+		long alloc= (this.count * this.size) / (1024 * 1024) ;
 		for (int i=0;i<this.count;i++) {
 			byte  b[] = new byte[this.size];
 			Arrays.fill(b, (byte)8);
+	
+			if ( !memoryLeft() ) {
+				System.out.println(dumbyId + " clearing remember");
+				remember.clear();
+			}
+			remember.add(b);
 		}
-		long d2=System.currentTimeMillis();
-		long delta=d2-d1;
-		System.out.println("Dumby " + dumbyCount + "Allocated " + this.count + " arrays of " + this.size + " bytes in " + delta + " ms");
+		//long d2=System.currentTimeMillis();
+		long d2=System.nanoTime();
+		duration=(double)(d2-d1)/1_000_000;
+		System.out.println(dumbyId 
+				+ " Allocated " + this.count 
+				+ " arrays of " + this.size  
+				+ " bytes " + alloc + " mb in "  
+				+ duration + " ms");
+	}
+	
+	private boolean memoryLeft() {
+	    long heapSize = Runtime.getRuntime().totalMemory();
+        long heapMaxSize = Runtime.getRuntime().maxMemory();
+        long heapFreeSize = Runtime.getRuntime().freeMemory(); 
+        float freeRatio = (float)heapFreeSize/heapMaxSize ;
+		// System.out.println(dumbyId + " heapSize " + heapSize + " heapMaxSize " + heapMaxSize + " heapFreeSize " + heapFreeSize +  " freeRatio " + freeRatio);
+
+        if ( freeRatio > 0.60 ) {
+        	return(true);
+        } 
+		System.out.println(dumbyId + " heapTotal " + heapSize + " heapMaxSize " + heapMaxSize + " heapFreeSize " + heapFreeSize);
+        return(false);
 	}
 	
 
