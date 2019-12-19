@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Dumby {
@@ -15,7 +16,10 @@ public class Dumby {
 	private String dumbyId;
 	private String startDate;
     private static AtomicInteger dumbyCount = new AtomicInteger();
-    private static ArrayList<byte[]> remember = new ArrayList<>();
+    private static ArrayList<byte[]> unsafeRemember = new ArrayList<>();
+    //private static ArrayList<byte[]> remember = new ArrayList<>();
+    //private static Vector<byte[]> remember = new Victor<>();
+    private static List<byte[]> remember = Collections.synchronizedList(unsafeRemember);
 	
 	public Dumby(int count,int size) {
 		System.out.println("Dumby");
@@ -54,14 +58,14 @@ public class Dumby {
 		//long d1=System.currentTimeMillis();
 		long d1=System.nanoTime();
 		long alloc= (this.count * this.size) / (1024 * 1024) ;
+		if ( !memoryLeft() && remember.size() > 10000 ) {
+			System.out.println(dumbyId + " clearing remember");
+			remember.clear();
+		}
+		
 		for (int i=0;i<this.count;i++) {
 			byte  b[] = new byte[this.size];
 			Arrays.fill(b, (byte)8);
-	
-			if ( !memoryLeft() ) {
-				System.out.println(dumbyId + " clearing remember");
-				remember.clear();
-			}
 			remember.add(b);
 		}
 		//long d2=System.currentTimeMillis();
