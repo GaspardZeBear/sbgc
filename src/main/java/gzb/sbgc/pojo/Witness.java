@@ -11,7 +11,7 @@ public class Witness {
 		public Witness(long sleep) {
 			System.out.println("Dumby");
 			this.sleep=sleep;
-			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
 			Date date = new Date(System.currentTimeMillis());
 			startDate=formatter.format(date);
 			long d1=System.nanoTime();

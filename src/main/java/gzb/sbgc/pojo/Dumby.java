@@ -13,25 +13,31 @@ public class Dumby {
 	private int count;
 	private double duration;
 	private int size;
+	private int idx;
 	private String dumbyId;
 	private String startDate;
     private static AtomicInteger dumbyCount = new AtomicInteger();
     private static ArrayList<byte[]> unsafeRemember = new ArrayList<>();
     //private static ArrayList<byte[]> remember = new ArrayList<>();
     //private static Vector<byte[]> remember = new Victor<>();
+    private final static int DUMBOES_SIZE = 1024 ;
     private static List<byte[]> remember = Collections.synchronizedList(unsafeRemember);
+    private static Dumbo dumboes[] = new Dumbo[DUMBOES_SIZE];
+    // private static Dumbo dumboes = Collections.synchronizedArray(unsafeDumboes);
 	
 	public Dumby(int count,int size) {
 		System.out.println("Dumby");
 		this.count=count;
 		this.size=size;
 		dumbyCount.getAndIncrement();
+		this.idx=dumbyCount.intValue() % DUMBOES_SIZE;
 		dumbyId="Dumby-" + dumbyCount;
 		System.out.println(dumbyId + " created");
 		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 		Date date = new Date(System.currentTimeMillis());
 		startDate=formatter.format(date);
-		fillUp();
+		//fillUp();
+		fillDumboes();
 	}
 	
 	public String getId() {
@@ -76,6 +82,20 @@ public class Dumby {
 				+ " arrays of " + this.size  
 				+ " bytes " + alloc + " mb in "  
 				+ duration + " ms");
+	}
+	
+	public void fillDumboes() {
+		long d1=System.nanoTime();
+		long alloc= (this.count * this.size) / (1024 * 1024) ;
+		dumboes[this.idx]=new Dumbo(this.count, this.size,dumboes[idx]);
+		long d2=System.nanoTime();
+		duration=(double)(d2-d1)/1_000_000;
+		System.out.println(dumbyId 
+				+ " Allocated " + this.count 
+				+ " arrays of " + this.size  
+				+ " bytes " + alloc + " mb "
+				+ " idx " + this.idx  
+				+ " in " + duration + " ms");
 	}
 	
 	private boolean memoryLeft() {
