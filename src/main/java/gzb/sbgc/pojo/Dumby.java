@@ -87,7 +87,7 @@ public class Dumby {
 	public void fillDumboes() {
 		long d1=System.nanoTime();
 		long alloc= (this.count * this.size) / (1024 * 1024) ;
-		dumboes[this.idx]=new Dumbo(this.count, this.size,dumboes[idx]);
+		dumboes[this.idx]=new Dumbo(dumbyId,this.count, this.size,dumboes[idx]);
 		long d2=System.nanoTime();
 		duration=(double)(d2-d1)/1_000_000;
 		System.out.println(dumbyId 
