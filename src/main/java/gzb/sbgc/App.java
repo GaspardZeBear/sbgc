@@ -10,6 +10,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,16 +19,19 @@ import org.slf4j.LoggerFactory;
 @SpringBootApplication
 public class App {
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
-	public static void main(String[] args) {
-		
-		RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
-		List<String> jvmArgs = bean.getInputArguments();
 
-	    for (String jvmArg : jvmArgs) {
-	      logger.info(jvmArg);
-	    }
-	    logger.info("-classpath " + System.getProperty("java.class.path"));
+	@PostConstruct
+    private void init() {
+	    RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
+	    List<String> jvmArgs = bean.getInputArguments();
+        for (String jvmArg : jvmArgs) {
+          logger.info("APP0001I " + jvmArg);
+        }
+       logger.info("APP0001I -classpath " + System.getProperty("java.class.path"));
+    }
+	
+	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
-		}
+	}
 
 }

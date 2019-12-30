@@ -33,10 +33,10 @@ public class HelloWorldController {
      return "Hello GZB Developer!!!";
 }
 
-@RequestMapping(value="/dumby/{maxIndex}/{count}/{size}")
+@RequestMapping(value="/dumby/{maxIndex}/{count}/{size}/{sleep}")
 @ResponseBody
-  public Dumby dumby(@PathVariable("maxIndex") int maxIndex,@PathVariable("count") int count,@PathVariable("size") int size) {
-	Dumby d = new Dumby(maxIndex,count,size) ;
+  public Dumby dumby(@PathVariable("maxIndex") int maxIndex,@PathVariable("count") int count,@PathVariable("size") int size,@PathVariable("sleep") int sleep) {
+	Dumby d = new Dumby(maxIndex,count,size,sleep) ;
     //return "Hello dumby done";
 	return(d);
 }

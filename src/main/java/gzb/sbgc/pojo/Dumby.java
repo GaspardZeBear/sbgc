@@ -16,6 +16,7 @@ public class Dumby {
 	
 	private int count;
 	private double duration;
+	private int sleep;
 	private int size;
 	private int idx;
 	private int maxIndex;
@@ -26,13 +27,12 @@ public class Dumby {
     private static Dumbo dumboes[] = new Dumbo[DUMBOES_SIZE];
 	private static final Logger logger = LoggerFactory.getLogger(Dumby.class);
 	
-	public Dumby(int maxIndex,int count,int size) {
-		//System.out.println("Dumby");
+	public Dumby(int maxIndex,int count,int size,int sleep) {
 		this.count=count;
 		this.size=size;
 		this.maxIndex=maxIndex;
+		this.sleep=sleep;
 		dumbyCount.getAndIncrement();
-		//this.idx=dumbyCount.intValue() % DUMBOES_SIZE;
 		this.idx=dumbyCount.intValue() % maxIndex;
 		dumbyId="Dumby-" + dumbyCount;
 		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
@@ -52,6 +52,9 @@ public class Dumby {
 	public int getCount() {
 		return(count);
 	}
+	public int getSleep() {
+		return(sleep);
+	}
 	
 	public double getDuration() {
 		return(duration);
@@ -66,17 +69,22 @@ public class Dumby {
 		long d1=System.nanoTime();
 		long alloc= (this.count * this.size) / (1024) ;
 		dumboes[this.idx]=new Dumbo(dumbyId,this.count, this.size,null);
+		try {
+			Thread.sleep(this.sleep);
+		} catch (InterruptedException e) {
+		}
 		long d2=System.nanoTime();
 		duration=(double)(d2-d1)/1_000_000;
 	
-		String msg = String.format("dumbyId %s count %d size %d alloc %d index %d maxIndex %d duration %.6f",
+		String msg = String.format("DUMBY0001I dumbyId %s count %d size %d alloc %d kB index %d maxIndex %d duration %.6f ms sleep %d ms",
 				this.dumbyId,
 				this.count, 
 				this.size,  
 				alloc, 
 				this.idx, 
 				this.maxIndex,
-				duration);
+				duration,
+				this.sleep);
 		logger.info(msg);
 	}
 	
