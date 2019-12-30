@@ -1,6 +1,10 @@
 package gzb.sbgc.pojo;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,18 +18,22 @@ public class Dumby {
 	private double duration;
 	private int size;
 	private int idx;
+	private int maxIndex;
 	private String dumbyId;
 	private String startDate;
     private static AtomicInteger dumbyCount = new AtomicInteger();
-    private final static int DUMBOES_SIZE = 1024 ;
+    private final static int DUMBOES_SIZE = 32767 ;
     private static Dumbo dumboes[] = new Dumbo[DUMBOES_SIZE];
+	private static final Logger logger = LoggerFactory.getLogger(Dumby.class);
 	
-	public Dumby(int count,int size) {
+	public Dumby(int maxIndex,int count,int size) {
 		//System.out.println("Dumby");
 		this.count=count;
 		this.size=size;
+		this.maxIndex=maxIndex;
 		dumbyCount.getAndIncrement();
-		this.idx=dumbyCount.intValue() % DUMBOES_SIZE;
+		//this.idx=dumbyCount.intValue() % DUMBOES_SIZE;
+		this.idx=dumbyCount.intValue() % maxIndex;
 		dumbyId="Dumby-" + dumbyCount;
 		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 		Date date = new Date(System.currentTimeMillis());
@@ -60,12 +68,16 @@ public class Dumby {
 		dumboes[this.idx]=new Dumbo(dumbyId,this.count, this.size,null);
 		long d2=System.nanoTime();
 		duration=(double)(d2-d1)/1_000_000;
-		System.out.println(dumbyId 
-				+ " Allocated " + this.count 
-				+ " arrays of " + this.size  
-				+ " bytes " + alloc + " kb "
-				+ " in slot " + this.idx  
-				+ " duration " + duration + " ms");
+	
+		String msg = String.format("dumbyId %s count %d size %d alloc %d index %d maxIndex %d duration %.6f",
+				this.dumbyId,
+				this.count, 
+				this.size,  
+				alloc, 
+				this.idx, 
+				this.maxIndex,
+				duration);
+		logger.info(msg);
 	}
 	
 	private boolean memoryLeft() {
