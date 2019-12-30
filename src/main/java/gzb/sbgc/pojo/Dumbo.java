@@ -8,15 +8,17 @@ import org.slf4j.LoggerFactory;
 
 public class Dumbo {
 	private int count;
+	private long birth;
 	private Dumbo prev;
 	private Dumbo next;
 	private static final Logger logger = LoggerFactory.getLogger(Dumbo.class);
 	
-	public Dumbo(String id,int count,int size, Dumbo prev) {
+	public Dumbo(String id, int count,int size, Dumbo prev) {
 	  this.count=count;
 	  this.prev=prev;
+	  this.birth=System.nanoTime();
 	  byte  b[] = new byte[size];
-	  Arrays.fill(b, (byte)8);
+	  //Arrays.fill(b, (byte)8);
 	  this.count--;
 	  if (this.count < 0) {
 		  logger.debug("Last Dumbo created for " + id);
@@ -24,5 +26,9 @@ public class Dumbo {
 		  this.next = new Dumbo(id,this.count, size, this);
 	  }
     }
+	
+	public long getBirth() {
+		return(this.birth);
+	}
 
 }

@@ -68,15 +68,22 @@ public class Dumby {
 	public void fillDumboes() {
 		long d1=System.nanoTime();
 		long alloc= (this.count * this.size) / (1024) ;
-		dumboes[this.idx]=new Dumbo(dumbyId,this.count, this.size,null);
+		long lifetime=0;
+		synchronized("Dumby-" + this.idx ) {
+		  if (dumboes[this.idx] != null) {
+			lifetime=d1-dumboes[this.idx].getBirth();
+		  }
+		  dumboes[this.idx]=new Dumbo(dumbyId, this.count, this.size,null);
+		}
 		try {
 			Thread.sleep(this.sleep);
 		} catch (InterruptedException e) {
 		}
 		long d2=System.nanoTime();
+
 		duration=(double)(d2-d1)/1_000_000;
 	
-		String msg = String.format("DUMBY0001I dumbyId %s count %d size %d alloc %d kB index %d maxIndex %d duration %.6f ms sleep %d ms",
+		String msg = String.format("DUMBY0001I dumbyId %s count %d size %d alloc %d kB index %d maxIndex %d duration %.6f ms sleep %d ms lifetime %d ms",
 				this.dumbyId,
 				this.count, 
 				this.size,  
@@ -84,7 +91,8 @@ public class Dumby {
 				this.idx, 
 				this.maxIndex,
 				duration,
-				this.sleep);
+				this.sleep,
+				lifetime/1_000_000);
 		logger.info(msg);
 	}
 	
