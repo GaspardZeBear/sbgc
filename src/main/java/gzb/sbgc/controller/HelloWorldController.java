@@ -25,8 +25,8 @@ import gzb.sbgc.pojo.Witness;
 @EnableAutoConfiguration
 public class HelloWorldController {
 	
-	private static final Logger dumbyLogger = LoggerFactory.getLogger("Dumby");
-	private static final Logger witnessLogger = LoggerFactory.getLogger("Witness");
+//	private static final Logger dumbyLogger = LoggerFactory.getLogger("Dumby");
+//	private static final Logger witnessLogger = LoggerFactory.getLogger("Witness");
 @RequestMapping("/hello")
 @ResponseBody
   public String sayHello() {

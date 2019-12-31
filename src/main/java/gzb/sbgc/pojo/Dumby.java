@@ -21,8 +21,10 @@ public class Dumby {
 	private int idx;
 	private int maxIndex;
 	private String dumbyId;
+    private int dumbyCountThis ;
 	private String startDate;
     private static AtomicInteger dumbyCount = new AtomicInteger();
+    private static AtomicInteger dumbyParallelCount = new AtomicInteger();
     private final static int DUMBOES_SIZE = 32767 ;
     private static Dumbo dumboes[] = new Dumbo[DUMBOES_SIZE];
 	private static final Logger logger = LoggerFactory.getLogger(Dumby.class);
@@ -32,13 +34,15 @@ public class Dumby {
 		this.size=size;
 		this.maxIndex=maxIndex;
 		this.sleep=sleep;
-		dumbyCount.getAndIncrement();
-		this.idx=dumbyCount.intValue() % maxIndex;
-		dumbyId="Dumby-" + dumbyCount;
+		dumbyParallelCount.getAndIncrement();
+		this.dumbyCountThis=dumbyCount.getAndIncrement();
+		this.idx=this.dumbyCountThis % maxIndex;
+		dumbyId="Dumby-" + this.dumbyCountThis;
 		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 		Date date = new Date(System.currentTimeMillis());
 		startDate=formatter.format(date);
 		fillDumboes();
+		dumbyParallelCount.getAndDecrement();
 	}
 	
 	public String getId() {
@@ -63,8 +67,12 @@ public class Dumby {
 	public String getStartDate() {
 		return(startDate);
 	}
-	
 
+	public static void writeDumbyLogHeader() {
+		String msg = String.format("DUMBY0001I total parallel count size allockB index maxIndex duration sleep lifetime");
+		logger.info(msg);
+	}
+	
 	public void fillDumboes() {
 		long d1=System.nanoTime();
 		long alloc= (this.count * this.size) / (1024) ;
@@ -83,9 +91,11 @@ public class Dumby {
 
 		duration=(double)(d2-d1)/1_000_000;
 	
-		String msg = String.format("DUMBY0001I dumbyId %s count %d size %d alloc %d kB index %d maxIndex %d duration %.6f ms sleep %d ms lifetime %d ms",
-				this.dumbyId,
-				this.count, 
+		//String msg = String.format("DUMBY0001I dumbyId %s total %d parallel %d count %d size %d alloc %d kB index %d maxIndex %d duration %.6f ms sleep %d ms lifetime %d ms",
+		String msg = String.format("DUMBY0001I %d %d %d %d %d %d %d %.6f %d %d",
+				this.dumbyCountThis,
+				this.dumbyParallelCount.intValue(),
+				this.count,
 				this.size,  
 				alloc, 
 				this.idx, 

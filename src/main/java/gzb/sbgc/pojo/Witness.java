@@ -17,14 +17,17 @@ public class Witness {
 		private String startDate;
 		private static final Logger logger = LoggerFactory.getLogger(Witness.class);
 		
+		public static void writeWitnessLogHeader() {
+			logger.info("WITNESS0001I sleep duration");
+		}
+		
 		public Witness(long sleep) {
-
 			this.sleep=sleep;
-			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Date date = new Date(System.currentTimeMillis());
+			//SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			//Date date = new Date(System.currentTimeMillis());
 			OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean();
 			//this.processCpuLoad=bean.getSystemLoadAverage();		
-			startDate=formatter.format(date);
+			//startDate=formatter.format(date);
 			long d1=System.nanoTime();
 			try {
 				Thread.sleep(sleep);
@@ -32,7 +35,8 @@ public class Witness {
 			}
 			long d2=System.nanoTime();
 			duration=(double)(d2-d1)/1_000_000;
-			logger.info(String.format("WITNESS0001I startDate %s sleep %d duration %.6f ms",startDate,sleep,duration));
+			//logger.info(String.format("WITNESS0001I startDate %s sleep %d duration %.6f ms",startDate,sleep,duration));
+			logger.info(String.format("WITNESS0001I %d %.6f",sleep,duration));
 		}
 		
 		public double getDuration() {
