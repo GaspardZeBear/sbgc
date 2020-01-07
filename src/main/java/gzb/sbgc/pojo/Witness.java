@@ -43,7 +43,7 @@ public class Witness {
 			return(duration);
 		}
 		
-		public String getStartDate() {
+		public String XgetStartDate() {
 			return(startDate);
 		}
 		

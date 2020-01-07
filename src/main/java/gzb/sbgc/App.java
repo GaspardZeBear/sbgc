@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import gzb.sbgc.pojo.Dumby;
 import gzb.sbgc.pojo.Witness;
+import gzb.sbgc.pojo.WitEcho;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -31,6 +32,7 @@ public class App {
        logger.info("APP0001I -classpath " + System.getProperty("java.class.path"));
        Dumby.writeDumbyLogHeader();
        Witness.writeWitnessLogHeader();
+       WitEcho.writeWitEchoLogHeader();
     }
 	
 	public static void main(String[] args) {

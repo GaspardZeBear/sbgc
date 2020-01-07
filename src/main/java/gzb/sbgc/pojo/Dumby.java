@@ -91,7 +91,7 @@ public class Dumby {
 
 		duration=(double)(d2-d1)/1_000_000;
 	
-		//String msg = String.format("DUMBY0001I dumbyId %s total %d parallel %d count %d size %d alloc %d kB index %d maxIndex %d duration %.6f ms sleep %d ms lifetime %d ms",
+		//String msg = String.format("DUMBY0001I dumbyId %s total %d parallel %d depth %d size %d alloc %d kB index %d maxIndex %d duration %.6f ms sleep %d ms lifetime %d ms",
 		String msg = String.format("DUMBY0001I %d %d %d %d %d %d %d %.6f %d %d",
 				this.dumbyCountThis,
 				this.dumbyParallelCount.intValue(),
