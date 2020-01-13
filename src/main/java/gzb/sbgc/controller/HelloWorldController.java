@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import gzb.sbgc.pojo.Dumby;
 import gzb.sbgc.pojo.Witness;
-import gzb.sbgc.pojo.WitEcho;
+import gzb.sbgc.pojo.Echo;
 /**
  *
  * @GaspardZeBear
@@ -48,9 +48,9 @@ public class HelloWorldController {
 	return(new Witness(sleep));
 }
 
-@RequestMapping(value="/witEcho/{sleep}/{duration}/{latency}")
+@RequestMapping(value="/echo/{id}/{sleep}/{duration}/{latency}")
 @ResponseBody
-  public WitEcho witEcho(@PathVariable("sleep") float sleep,@PathVariable("duration") float duration, @PathVariable("latency") long latency) {
-	return(new WitEcho(sleep,duration,latency));
+  public Echo echo(@PathVariable("id") String id, @PathVariable("sleep") float sleep,@PathVariable("duration") float duration, @PathVariable("latency") long latency) {
+	return(new Echo(id,sleep,duration,latency));
 }
 }
