@@ -27,6 +27,7 @@ public class Dumby {
     private static AtomicInteger dumbyParallelCount = new AtomicInteger();
     private final static int DUMBOES_SIZE = 32767 ;
     private static Dumbo dumboes[] = new Dumbo[DUMBOES_SIZE];
+    private static int dumboesSize[] = new int[DUMBOES_SIZE];
 	private static final Logger logger = LoggerFactory.getLogger(Dumby.class);
 	
 	public Dumby(int maxIndex,int count,int size,int sleep) {
@@ -47,6 +48,16 @@ public class Dumby {
 	
 	public String getId() {
 		return(dumbyId);
+	}
+	
+	public static int computeDumboesSize() {
+		int size=0;
+		for (int i=0;i<DUMBOES_SIZE;i++) {
+			if ( dumboes[i] != null) {
+				size += dumboesSize[i] ;
+			};
+		}
+		return(size);
 	}
 	
 	public int getSize() {
@@ -73,6 +84,13 @@ public class Dumby {
 		logger.info(msg);
 	}
 	
+	public static void reset() {
+		for (int i=0;i<dumboes.length;i++) {
+			dumboes[i]=null;
+			dumboesSize[i]=0;
+		}
+	}
+	
 	public void fillDumboes() {
 		long d1=System.nanoTime();
 		long alloc= (this.count * this.size) / (1024) ;
@@ -82,6 +100,7 @@ public class Dumby {
 			lifetime=d1-dumboes[this.idx].getBirth();
 		  }
 		  dumboes[this.idx]=new Dumbo(dumbyId, this.count, this.size,null);
+		  dumboesSize[this.idx]=this.count * this.size;
 		}
 		try {
 			Thread.sleep(this.sleep);
@@ -106,19 +125,7 @@ public class Dumby {
 		logger.info(msg);
 	}
 	
-	private boolean memoryLeft() {
-	    long heapSize = Runtime.getRuntime().totalMemory();
-        long heapMaxSize = Runtime.getRuntime().maxMemory();
-        long heapFreeSize = Runtime.getRuntime().freeMemory(); 
-        float freeRatio = (float)heapFreeSize/heapMaxSize ;
-		// System.out.println(dumbyId + " heapSize " + heapSize + " heapMaxSize " + heapMaxSize + " heapFreeSize " + heapFreeSize +  " freeRatio " + freeRatio);
 
-        if ( freeRatio > 0.60 ) {
-        	return(true);
-        } 
-		System.out.println(dumbyId + " heapTotal " + heapSize + " heapMaxSize " + heapMaxSize + " heapFreeSize " + heapFreeSize);
-        return(false);
-	}
 	
 
 }

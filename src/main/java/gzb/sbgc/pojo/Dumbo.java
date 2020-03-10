@@ -11,14 +11,16 @@ public class Dumbo {
 	private long birth;
 	private Dumbo prev;
 	private Dumbo next;
+	private Byte b[];
 	private static final Logger logger = LoggerFactory.getLogger(Dumbo.class);
 	
 	public Dumbo(String id, int count,int size, Dumbo prev) {
 	  this.count=count;
 	  this.prev=prev;
 	  this.birth=System.nanoTime();
-	  byte  b[] = new byte[size];
-	  //Arrays.fill(b, (byte)8);
+	  b = new Byte[size];
+	  byte mb=8;
+	  Arrays.fill(b, new Byte(mb));
 	  this.count--;
 	  if (this.count < 0) {
 		  logger.debug("Last Dumbo created for " + id);

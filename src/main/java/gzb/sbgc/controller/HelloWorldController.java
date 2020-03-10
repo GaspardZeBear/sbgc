@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import gzb.sbgc.pojo.Dumby;
 import gzb.sbgc.pojo.Witness;
 import gzb.sbgc.pojo.Echo;
+import gzb.sbgc.pojo.Stats;
 /**
  *
  * @GaspardZeBear
@@ -32,6 +33,21 @@ public class HelloWorldController {
 @ResponseBody
   public String sayHello() {
      return "Hello GZB Developer!!!";
+}
+
+
+@RequestMapping("/reset")
+@ResponseBody
+  public String reset() {
+	 Dumby.reset();
+     return "Dumby resetted";
+}
+
+@RequestMapping("/stats")
+@ResponseBody
+  public Stats stats() {
+	 Stats s = new Stats();
+     return(s);
 }
 
 @RequestMapping(value="/dumby/{maxIndex}/{count}/{size}/{sleep}")
