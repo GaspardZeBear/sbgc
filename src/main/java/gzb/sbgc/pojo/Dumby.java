@@ -26,9 +26,9 @@ public class Dumby {
     private static AtomicInteger dumbyCount = new AtomicInteger();
     private static AtomicInteger dumbyParallelCount = new AtomicInteger();
     private final static int DUMBOES_SIZE = 32767 ;
-    private static Dumbo dumboes[] = new Dumbo[DUMBOES_SIZE];
-    private static int dumboesSize[] = new int[DUMBOES_SIZE];
-	private static final Logger logger = LoggerFactory.getLogger(Dumby.class);
+    private Dumbo dumboesHead;
+    private static Dumby dumbies[] = new Dumby[DUMBOES_SIZE];
+    private static final Logger logger = LoggerFactory.getLogger(Dumby.class);
 	
 	public Dumby(int maxIndex,int count,int size,int sleep) {
 		this.count=count;
@@ -53,8 +53,9 @@ public class Dumby {
 	public static int computeDumboesSize() {
 		int size=0;
 		for (int i=0;i<DUMBOES_SIZE;i++) {
-			if ( dumboes[i] != null) {
-				size += dumboesSize[i] ;
+			if ( dumbies[i] != null) {
+				//size += dumboesSize[i] ;
+				size += dumbies[i].getSize() * dumbies[i].getCount();
 			};
 		}
 		return(size);
@@ -85,9 +86,8 @@ public class Dumby {
 	}
 	
 	public static void reset() {
-		for (int i=0;i<dumboes.length;i++) {
-			dumboes[i]=null;
-			dumboesSize[i]=0;
+		for (int i=0;i<dumbies.length;i++) {
+			dumbies[i]=null;
 		}
 	}
 	
@@ -96,11 +96,11 @@ public class Dumby {
 		long alloc= (this.count * this.size) / (1024) ;
 		long lifetime=0;
 		synchronized("Dumby-" + this.idx ) {
-		  if (dumboes[this.idx] != null) {
-			lifetime=d1-dumboes[this.idx].getBirth();
+		  if (dumbies[this.idx] != null) {
+			lifetime=d1-dumbies[this.idx].dumboesHead.getBirth();
 		  }
-		  dumboes[this.idx]=new Dumbo(dumbyId, this.count, this.size,null);
-		  dumboesSize[this.idx]=this.count * this.size;
+		  dumboesHead = new Dumbo(dumbyId, this.count, this.size,null);
+		  dumbies[this.idx]=this;
 		}
 		try {
 			Thread.sleep(this.sleep);
