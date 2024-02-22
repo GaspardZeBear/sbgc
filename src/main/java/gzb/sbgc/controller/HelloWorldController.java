@@ -18,6 +18,7 @@ import gzb.sbgc.pojo.Dumby;
 import gzb.sbgc.pojo.Witness;
 import gzb.sbgc.pojo.Echo;
 import gzb.sbgc.pojo.Stats;
+import gzb.sbgc.pojo.Fibo;
 /**
  *
  * @GaspardZeBear
@@ -50,10 +51,10 @@ public class HelloWorldController {
      return(s);
 }
 
-@RequestMapping(value="/dumby/{maxIndex}/{count}/{size}/{sleep}")
+@RequestMapping(value="/dumby/{maxIndex}/{count}/{size}/{sleep}/{deepsleep}")
 @ResponseBody
-  public Dumby dumby(@PathVariable("maxIndex") int maxIndex,@PathVariable("count") int count,@PathVariable("size") int size,@PathVariable("sleep") int sleep) {
-	Dumby d = new Dumby(maxIndex,count,size,sleep) ;
+  public Dumby dumby(@PathVariable("maxIndex") int maxIndex,@PathVariable("count") int count,@PathVariable("size") int size,@PathVariable("sleep") int sleep,@PathVariable("deepsleep") int deepsleep) {
+	Dumby d = new Dumby(maxIndex,count,size,sleep,deepsleep) ;
     //return "Hello dumby done";
 	return(d);
 }
@@ -62,6 +63,12 @@ public class HelloWorldController {
 @ResponseBody
   public Witness witness(@PathVariable("sleep") long sleep) {
 	return(new Witness(sleep));
+}
+
+@RequestMapping(value="/fibo/{c}/{n}")
+@ResponseBody
+  public Fibo fibo(@PathVariable("c") int c,@PathVariable("n") int n) {
+	return(new Fibo(c,n));
 }
 
 @RequestMapping(value="/echo/{id}/{sleep}/{duration}/{latency}")

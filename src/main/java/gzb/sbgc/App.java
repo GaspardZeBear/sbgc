@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import gzb.sbgc.pojo.Dumby;
 import gzb.sbgc.pojo.Witness;
 import gzb.sbgc.pojo.Echo;
+import gzb.sbgc.pojo.Fibo;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;

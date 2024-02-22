@@ -17,6 +17,7 @@ public class Dumby {
 	private int count;
 	private double duration;
 	private int sleep;
+	private int deepsleep;
 	private int size;
 	private int idx;
 	private int maxIndex;
@@ -30,11 +31,12 @@ public class Dumby {
     private static Dumby dumbies[] = new Dumby[DUMBOES_SIZE];
     private static final Logger logger = LoggerFactory.getLogger(Dumby.class);
 	
-	public Dumby(int maxIndex,int count,int size,int sleep) {
+	public Dumby(int maxIndex,int count,int size,int sleep,int deepsleep) {
 		this.count=count;
 		this.size=size;
 		this.maxIndex=maxIndex;
 		this.sleep=sleep;
+		this.deepsleep=deepsleep;
 		dumbyParallelCount.getAndIncrement();
 		this.dumbyCountThis=dumbyCount.getAndIncrement();
 		this.idx=this.dumbyCountThis % maxIndex;
@@ -99,7 +101,7 @@ public class Dumby {
 		  if (dumbies[this.idx] != null) {
 			lifetime=d1-dumbies[this.idx].dumboesHead.getBirth();
 		  }
-		  dumboesHead = new Dumbo(dumbyId, this.count, this.size,null);
+		  dumboesHead = new Dumbo(dumbyId, this.count, this.size,null,this.deepsleep);
 		  dumbies[this.idx]=this;
 		}
 		try {
